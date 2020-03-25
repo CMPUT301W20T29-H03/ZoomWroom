@@ -36,12 +36,12 @@
 
             <EditText
                 android:id="@+id/driverSignupFName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="First Name"
-                android:layout_weight="1" 
                 style="@style/EditTextDefaultDriverRegister"
-                android:layout_marginEnd="5dp"/>
+                android:layout_width="0dp"
+                android:layout_height="33dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:hint="First Name" />
 
             <EditText
                 android:id="@+id/driverSignupLName"

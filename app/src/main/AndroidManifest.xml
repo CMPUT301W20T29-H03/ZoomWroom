@@ -20,15 +20,14 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true">
-
-        <activity android:name=".EditUserProfileActivity"/>
-
+        android:theme="@style/AppTheme">
+        <activity android:name=".DriverInfosForContactActivitys"></activity>
+        <activity android:name=".EditUserProfileActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

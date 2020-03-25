@@ -104,6 +104,14 @@
             app:iconTint="@color/CyanBlueGreen"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             />
+        <Button
+            android:id="@+id/testemailbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="test"
+            android:textColor="@color/circleboarder">
+
+        </Button>
 
     </FrameLayout>
 

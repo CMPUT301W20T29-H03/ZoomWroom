@@ -74,6 +74,11 @@ public class FragmentCreateRide  extends BottomSheetDialogFragment {
                 MyDataBase.addRequest(newRequest);
                 Toast.makeText(getContext(), "Successfully create a ride!", Toast.LENGTH_SHORT).show();
                 dismiss();
+
+
+
+
+
             }
         });
 

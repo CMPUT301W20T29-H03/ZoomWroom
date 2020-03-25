@@ -22,6 +22,7 @@ public class DriverModeActivity extends AppCompatActivity {
     Button riderModeBtn;
     Button driverSignUpBtn;
     Button loginBtn;
+    Button testBtn;
     EditText driverEmailEditText;
     EditText driverPasswordEditText;
     private FirebaseAuth mAuth;
@@ -61,6 +62,15 @@ public class DriverModeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 OpenActivityRiderMode();
+            }
+        });
+
+        //test email and call
+        testBtn = findViewById(R.id.testemailbtn);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDriverInfosActivity();
             }
         });
 
@@ -117,6 +127,10 @@ public class DriverModeActivity extends AppCompatActivity {
 
     public void openDriverHome(){
         Intent intent = new Intent(this, DriverHomeActivity.class);
+        startActivity(intent);
+    }
+    public void openDriverInfosActivity(){
+        Intent intent = new Intent(this ,DriverInfosForContactActivitys.class);
         startActivity(intent);
     }
 }
