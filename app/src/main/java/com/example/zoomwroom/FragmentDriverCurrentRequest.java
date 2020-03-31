@@ -1,29 +1,23 @@
 package com.example.zoomwroom;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.zoomwroom.Entities.DriveRequest;
-import com.example.zoomwroom.Entities.Driver;
 import com.example.zoomwroom.Entities.Rider;
 import com.example.zoomwroom.database.MyDataBase;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import org.w3c.dom.Text;
-
-import java.util.Map;
 
 public class FragmentDriverCurrentRequest extends BottomSheetDialogFragment {
 
-    protected TextView rider_name;
     public FragmentDriverCurrentRequest(){};
 
 
@@ -60,13 +54,13 @@ public class FragmentDriverCurrentRequest extends BottomSheetDialogFragment {
             message += "  Lon: " + Double.toString(request.getPickupLocationLng()).substring(0, 10);
             pickup.setText(message);
             message = "Lon: " + Double.toString(request.getPickupLocationLng());
-            if (request.getStatus() == 1) {
+            if (request.getStatus() == DriveRequest.Status.ACCEPTED) {
                 message = "ACCEPTED";
             }
-            else if (request.getStatus() == 2) {
+            else if (request.getStatus() == DriveRequest.Status.CONFIRMED) {
                 message = "CONFIRMED";
             }
-            else if (request.getStatus() == 3) {
+            else if (request.getStatus() == DriveRequest.Status.ONGOING) {
                 message = "ONGOING";
             }
             status.setText(message);
@@ -77,27 +71,17 @@ public class FragmentDriverCurrentRequest extends BottomSheetDialogFragment {
 
         Button complete = view.findViewById(R.id.complete_button);
 
-        complete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
+        complete.setOnClickListener(v -> {
+            dismiss();
+            RiderCompleteRequestFragment fragment = new RiderCompleteRequestFragment(request);
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(fragment, "Complete_fragment")
+                    .addToBackStack(null)
+                    .commit();
+            fragmentManager.executePendingTransactions();
         });
 
-        // SETUP CLICKABLE RIDER NAME
-        showRiderProfile(request);
         return view;
-    }
-
-    public void showRiderProfile(DriveRequest driveRequest){
-        String riderId = driveRequest.getRiderID();
-        rider_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RiderInfo.class);
-                intent.putExtra("RIDER_ID",riderId);
-                startActivity(intent);
-            }
-        });
     }
 }

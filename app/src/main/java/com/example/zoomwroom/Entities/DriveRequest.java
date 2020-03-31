@@ -43,6 +43,7 @@ public class DriveRequest implements Serializable {
         public static final int CANCELLED   = 5;
         public static final int DECLINED    = 6;
         public static final int ABORTED     = 7;
+        public static final int COMPLETED1  = 8;
     }
     //</editor-fold>
 

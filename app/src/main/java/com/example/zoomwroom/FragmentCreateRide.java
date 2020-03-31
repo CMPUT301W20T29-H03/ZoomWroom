@@ -85,49 +85,43 @@ public class FragmentCreateRide  extends BottomSheetDialogFragment {
 
 
         // Confirm button in order to send new DriveRequest to Firebase
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (newRequest == null){
-                    double offeredFare = Double.valueOf(fare.getText().toString());
-                    price = RiderHomeActivity.round(price,2);
-                    // Do not accept ride requests where the offer is lower than the suggested price
-                    if (offeredFare < price){
-                        Toast.makeText(getContext(), "Fare must be a minimum of " + price, Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        LatLng departure = new LatLng(depLat, depLon);
-                        LatLng destination = new LatLng(desLat, desLon);
-                        newRequest = new DriveRequest(userID, departure, destination);
+        confirm.setOnClickListener(v -> {
+            if (newRequest == null){
+                double offeredFare = Double.valueOf(fare.getText().toString());
+                price = RiderHomeActivity.round(price,2);
+                // Do not accept ride requests where the offer is lower than the suggested price
+                if (offeredFare < price){
+                    Toast.makeText(getContext(), "Fare must be a minimum of " + price, Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    LatLng departure = new LatLng(depLat, depLon);
+                    LatLng destination1 = new LatLng(desLat, desLon);
+                    newRequest = new DriveRequest(userID, departure, destination1);
 
-                        // grabbing the fare offered by the user
-                        newRequest.setOfferedFare(Float.valueOf(fare.getText().toString()));
-                        fare.setEnabled(false);
-                        MyDataBase.addRequest(newRequest);
-                        Toast.makeText(getContext(), "Successfully create a ride!", Toast.LENGTH_SHORT).show();
-                    }
-
+                    // grabbing the fare offered by the user
+                    newRequest.setOfferedFare(Float.valueOf(fare.getText().toString()));
+                    fare.setEnabled(false);
+                    MyDataBase.addRequest(newRequest);
+                    Toast.makeText(getContext(), "Successfully create a ride!", Toast.LENGTH_SHORT).show();
                 }
 
             }
+
         });
 
         // Cancel button
         // if a ride request exists, set the status to null
         // restart the activity
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (newRequest != null){
-                    newRequest.setStatus(5);
-                    MyDataBase.updateRequest(newRequest);
-                }
-
-                Intent intent = new Intent(getActivity(), RiderHomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-
+        cancel.setOnClickListener(v -> {
+            if (newRequest != null){
+                newRequest.setStatus(DriveRequest.Status.CANCELLED);
+                MyDataBase.updateRequest(newRequest);
             }
+
+            Intent intent = new Intent(getActivity(), RiderHomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
         });
 
 
@@ -167,12 +161,7 @@ public class FragmentCreateRide  extends BottomSheetDialogFragment {
         driverUserName.setText(stringUsername);
 
         // overriding confirm button
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmRidePhase(driveRequest);
-            }
-        });
+        confirm.setOnClickListener(v -> confirmRidePhase(driveRequest));
 
         // activate function to show driver profile
         showDriverProfile(driveRequest);
@@ -189,7 +178,7 @@ public class FragmentCreateRide  extends BottomSheetDialogFragment {
      * */
     public void confirmRidePhase(DriveRequest driveRequest){
         newRequest = driveRequest;
-        driveRequest.setStatus(2);
+        driveRequest.setStatus(DriveRequest.Status.CONFIRMED);
         MyDataBase.updateRequest(driveRequest);
         confirm.setVisibility(View.GONE);
     }
@@ -206,12 +195,9 @@ public class FragmentCreateRide  extends BottomSheetDialogFragment {
         newRequest = driveRequest;
         cancel.setVisibility(View.GONE);
         complete.setVisibility(View.VISIBLE);
-        complete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                driveRequest.setStatus(4);
-                MyDataBase.updateRequest(driveRequest);
-            }
+        complete.setOnClickListener( v -> {
+            driveRequest.setStatus(DriveRequest.Status.COMPLETED1);
+            MyDataBase.updateRequest(driveRequest);
         });
 
     }
@@ -224,13 +210,10 @@ public class FragmentCreateRide  extends BottomSheetDialogFragment {
      * */
     public void showDriverProfile(DriveRequest driveRequest){
         String driverId = driveRequest.getDriverID();
-        driverUserName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), DriverInfo.class);
-                intent.putExtra("DRIVER_ID",driverId);
-                startActivity(intent);
-            }
+        driverUserName.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), UserInfoForContactActivity.class);
+            intent.putExtra("USER_ID",driverId);
+            startActivity(intent);
         });
     }
 

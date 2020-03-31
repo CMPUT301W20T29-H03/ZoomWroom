@@ -1,5 +1,6 @@
 package com.example.zoomwroom;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +13,19 @@ import com.example.zoomwroom.database.MyDataBase;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /**
- * @author: Dulong Sang
- * Mar 29, 2020
+ * @author Dulong Sang
+ * last update: Mar 31, 2020
  */
 
-public class CompleteRequestFragment extends BottomSheetDialogFragment
+public class RiderCompleteRequestFragment extends BottomSheetDialogFragment
         implements RateDriverFragment.OnFragmentInteractionListener {
 
     private Driver driver;
     private DriveRequest driveRequest;
+
+    public RiderCompleteRequestFragment(DriveRequest driveRequest) {
+        this.driveRequest = driveRequest;
+    }
 
     @Override
     public void onCreate(Bundle savedInstancesState) {
@@ -31,13 +36,6 @@ public class CompleteRequestFragment extends BottomSheetDialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.complete_request_fragment, container, false);
-        Bundle bundle = getArguments();
-        assert bundle != null;
-        driveRequest = (DriveRequest) bundle.getSerializable("driveRequest");
-        assert driveRequest != null;
-
-        driver = MyDataBase.getDriver(driveRequest.getDriverID());
-        assert driver != null;
 
         // findViews
         Button generateQRButton;
@@ -60,7 +58,14 @@ public class CompleteRequestFragment extends BottomSheetDialogFragment
 
         completeButton.setText(String.format("Rate %s", driver.getName()));
         completeButton.setOnClickListener(v -> {
-            // TODO: complete
+            // update the request status
+            driveRequest.setStatus(DriveRequest.Status.COMPLETED);
+            MyDataBase.updateRequest(driveRequest);
+
+            // close this fragment
+            Intent intent = new Intent(getActivity(), RiderHomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         });
 
         return view;
