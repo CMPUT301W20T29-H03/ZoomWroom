@@ -227,8 +227,8 @@ public class FragmentCreateRide  extends BottomSheetDialogFragment {
         driverUserName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), DriverInfoForContactActivity.class);
-                intent.putExtra("DRIVER_ID",driverId);
+                Intent intent = new Intent(getActivity(), UserInfoForContactActivity.class);
+                intent.putExtra("USER_ID",driverId);
                 startActivity(intent);
             }
         });

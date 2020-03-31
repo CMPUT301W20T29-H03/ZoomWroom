@@ -12,7 +12,7 @@ import com.example.zoomwroom.database.MyDataBase;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /**
- * @author: Dulong Sang
+ * @author Dulong Sang
  * Mar 29, 2020
  */
 
